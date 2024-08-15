@@ -5,7 +5,6 @@ import (
 	"github.com/alecthomas/go_serialization_benchmarks/internal/serializers/avro"
 	"github.com/alecthomas/go_serialization_benchmarks/internal/serializers/baseline"
 	bebop200sc "github.com/alecthomas/go_serialization_benchmarks/internal/serializers/bebop_200sc"
-	bebopwellquite "github.com/alecthomas/go_serialization_benchmarks/internal/serializers/bebop_wellquite"
 	"github.com/alecthomas/go_serialization_benchmarks/internal/serializers/benc"
 	binaryalecthomas "github.com/alecthomas/go_serialization_benchmarks/internal/serializers/binary_alecthomas"
 	"github.com/alecthomas/go_serialization_benchmarks/internal/serializers/bson"
@@ -16,7 +15,6 @@ import (
 	"github.com/alecthomas/go_serialization_benchmarks/internal/serializers/fastjson"
 	"github.com/alecthomas/go_serialization_benchmarks/internal/serializers/flatbuffers"
 	"github.com/alecthomas/go_serialization_benchmarks/internal/serializers/gencode"
-	"github.com/alecthomas/go_serialization_benchmarks/internal/serializers/gogo"
 	"github.com/alecthomas/go_serialization_benchmarks/internal/serializers/gotiny"
 	"github.com/alecthomas/go_serialization_benchmarks/internal/serializers/hprose"
 	"github.com/alecthomas/go_serialization_benchmarks/internal/serializers/hprose2"
@@ -27,6 +25,7 @@ import (
 	msgpacktinylib "github.com/alecthomas/go_serialization_benchmarks/internal/serializers/msgpack_tinylib"
 	msgpackvmihailenco "github.com/alecthomas/go_serialization_benchmarks/internal/serializers/msgpack_vmihailenco"
 	"github.com/alecthomas/go_serialization_benchmarks/internal/serializers/mus"
+	"github.com/alecthomas/go_serialization_benchmarks/internal/serializers/protobuf"
 	protobufdedis "github.com/alecthomas/go_serialization_benchmarks/internal/serializers/protobuf_dedis"
 	"github.com/alecthomas/go_serialization_benchmarks/internal/serializers/pulsar"
 	"github.com/alecthomas/go_serialization_benchmarks/internal/serializers/sereal"
@@ -261,16 +260,9 @@ var benchmarkCases = []BenchmarkCase{
 		TimeSupport: TSNoSupport,
 		APIKind:     AKCodegen,
 	}, {
-		Name: "gogo/protobuf",
-		URL:  "github.com/gogo/protobuf/proto",
-		New:  gogo.NewGogoProtoSerializer,
-
-		TimeSupport: TSNoSupport,
-		APIKind:     AKCodegen,
-	}, {
-		Name: "gogo/jsonpb",
-		URL:  "github.com/gogo/protobuf/proto",
-		New:  gogo.NewGogoJsonSerializer,
+		Name: "protocolbuffers/protobuf-go",
+		URL:  "github.com/protocolbuffers/protobuf-go",
+		New:  protobuf.NewProtobufSerializer,
 
 		TimeSupport: TSRFC3339Ns,
 		APIKind:     AKCodegen,
@@ -381,27 +373,6 @@ var benchmarkCases = []BenchmarkCase{
 		Name: "200sc/bebop/reuse",
 		URL:  "github.com/200sc/bebop",
 		New:  bebop200sc.NewBebop200ScReuseSerializer,
-
-		BufferReuseMarshal: true,
-		TimeSupport:        TSCustom,
-		APIKind:            AKCodegen,
-		Notes: []string{
-			"time.Time values are encoded with 100 nanosecond precision.",
-		},
-	}, {
-		Name: "wellquite/bebop",
-		URL:  "wellquite.org/bebop",
-		New:  bebopwellquite.NewBebopWellquiteSerializer,
-
-		TimeSupport: TSCustom,
-		APIKind:     AKCodegen,
-		Notes: []string{
-			"time.Time values are encoded with 100 nanosecond precision.",
-		},
-	}, {
-		Name: "wellquite/bebop/reuse",
-		URL:  "wellquite.org/bebop",
-		New:  bebopwellquite.NewBebopWellquiteReuseSerializer,
 
 		BufferReuseMarshal: true,
 		TimeSupport:        TSCustom,
